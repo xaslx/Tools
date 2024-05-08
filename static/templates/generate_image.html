@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate Image</title>
+</head>
+<body>
+
+<div class="sidebar">
+    <form id="myForm" action="#">
+        <label for="input3">Промпт (на английском):</label>
+        <textarea id="textarea" name="textarea" placeholder="Например: The poor programmer is sad on his island"></textarea><br>
+        <button type="button" onclick="submitData()">Сгенерировать</button>
+        <a href="/"><button type="button">Главное меню</button></a>
+    </form>
+</div>
+<div id="loadingMessage" style="display: none;">
+    Генерация изображения, подождите...
+</div>
+<div id="imageContainer" style="display: none;">
+    <img id="generatedImage" src="" alt="Сгенерированная картинка">
+    <br>
+    <label for="image">Сгенерированная картинка</label>
+</div>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: #f4f4f4;
+
+}
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f4f4f4;
+    padding: 20px;
+    padding-top: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.sidebar label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+.sidebar input[type="text"],
+
+.sidebar textarea {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.sidebar textarea {
+    resize: none;
+    height: 100px;
+}
+.sidebar button {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+}
+
+.sidebar button:hover {
+    border-color: orange;
+    background-color: #f4f4f4;
+    color: black;
+}
+
+
+#loadingMessage {
+    display: none;
+    position: relative;
+    top: 50%;
+    background-color: rgb(246, 213, 151);
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+#imageContainer {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    max-width: calc(100% - 300px);
+    max-height: calc(100vh - 100px);
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    right: 230px; 
+    transform: translateY(-50%);
+}
+
+#generatedImage {
+    max-width: 800px;
+    max-height: 800px;
+    width: auto;
+    height: auto;
+}
+</style>
+<script>
+    function submitData() {
+
+    document.getElementById("loadingMessage").style.display = "block";
+
+    var formData = {
+        textarea: document.getElementById("textarea").value
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/image", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log("Success:", xhr.responseText);
+        
+                var responseData = JSON.parse(xhr.responseText);
+                showGeneratedImage(responseData.image_url);
+                resetForm();
+
+                document.getElementById("loadingMessage").style.display = "none";
+            } else {
+                console.log("Error:", xhr.statusText);
+
+            }
+        }
+    };
+    xhr.send(JSON.stringify(formData));
+}
+
+    function showGeneratedImage(imageUrl) {
+        var generatedImage = document.getElementById("generatedImage");
+        generatedImage.src = imageUrl;
+
+        document.getElementById("imageContainer").style.display = "block";
+
+        document.getElementById("loadingMessage").style.display = "none";
+    }
+
+    function resetForm() {
+        document.getElementById("textarea").value = "";
+    }
+</script>
+
+</body>
+</html>

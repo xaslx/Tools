@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center; /* Центрируем текст внутри контейнера */
+        border: 2px solid #333;
+        padding: 20px;
+        border-radius: 8px;
+        height: 500px;
+        width: 300px;
+        background-color: #f4f4f4;
+    }
+
+    button {
+        width: 170px;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+        background-color: transparent;
+        color: black;
+        border: 2px solid black;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+        border-color: orange;
+        background-color: #f4f4f4;
+        color: black;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/qrcode"><button>Создать QR Code</button></a>
+    <a href="/qrcode/scan"><button>Сканировать QR Code</button></a>
+    <a href="/image"><button>Сгенерировать изображение</button></a>
+    <a href="/download_youtube"><button>Скачать видео с YouTube</button></a>
+    <a href="/download_tt"><button>Скачать видео с TikTok</button></a>
+    <a href="/download_inst"><button>Скачать видео с Instagram</button></a>
+</div>
+
+</body>
+</html>

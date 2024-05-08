@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate QR Code and Image</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        min-height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        border: 2px solid #333;
+        padding: 20px;
+        border-radius: 8px;
+        height: 300px;
+        width: 300px;
+        background-color: #f4f4f4;
+        margin-top: 50px;
+    }
+
+    input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+        border: 2px solid black;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 270px;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+        background-color: transparent;
+        color: black;
+        border: 2px solid black;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+        border-color: orange;
+        background-color: #f4f4f4;
+        color: black;
+    }
+
+    label {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <label for="urlInput">Введите ссылку:</label>
+    <input type="text" id="urlInput" name="urlInput" placeholder="Например: https://example.com">
+    <button onclick="generateQR(event)">Сгенерировать QR Code</button>
+    <a href="/"><button >Главное меню</button></a>
+    <p id="errorMessage" style="color: red; display: none;">Поле не должно быть пустым</p>
+</div>
+<div class="container">
+    <label for="urlInput">Здесь будет Qr Code:</label>
+    <img id="qrCodeImage" src="" alt="QR Code" style="display: none;">
+</div>
+
+<script>
+    function generateQR(event) {
+    event.preventDefault();
+    var inputUrl = document.getElementById('urlInput').value;
+    if (!inputUrl) {
+        document.getElementById('errorMessage').style.display = 'block';
+        setTimeout(function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }, 1000);
+        return;
+    }
+    
+    var requestData = {
+        link: inputUrl
+    };
+    
+    fetch('/qrcode', {
+        method: 'POST',
+        body: JSON.stringify(requestData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('qrCodeImage').src = data.image_url;
+        document.getElementById('qrCodeImage').style.display = 'block';
+    })
+    .catch(error => console.error('Error:', error));
+    }
+
+
+</script>
+</body>
+</html>
