@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, Body
 from fastapi.templating import Jinja2Templates
-from schemas.image import ImageIn
 import replicate
 from dotenv import load_dotenv, get_key
 from typing import Annotated

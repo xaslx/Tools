@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center; /* Центрируем текст внутри контейнера */
+        border: 2px solid #333;
+        padding: 20px;
+        border-radius: 8px;
+        height: 300px;
+        width: 300px;
+        background-color: #f4f4f4;
+    }
+
+    #videoLink {
+        width: 100%; /* Установка ширины в 100% контейнера */
+        padding: 10px; /* Добавление отступов внутри поля ввода */
+        box-sizing: border-box; /* Учитываем отступы и границы внутри ширины поля ввода */
+        margin-bottom: 10px; /* Добавляем небольшой отступ снизу */
+    }
+
+    #resolution {
+        width: 100%; /* Устанавливаем ширину селекта на всю ширину контейнера */
+        padding: 10px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    button {
+        width: 100%; /* Устанавливаем кнопку на всю ширину контейнера */
+        padding: 10px;
+        margin-top: 10px;
+        box-sizing: border-box;
+        background-color: transparent;
+        color: black;
+        border: 2px solid black;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+        border-color: orange;
+        background-color: #f4f4f4;
+        color: black;
+    }
+    .error-message {
+        color: red; /* Устанавливаем красный цвет текста */
+        margin-top: 5px; /* Добавляем небольшой отступ сверху */
+        display: none; /* По умолчанию скрываем сообщение об ошибке */
+    }
+    a {
+        text-decoration: none;
+        color: black;
+        width: 100%;
+    }
+    .success-message {
+        color: green; /* Устанавливаем зеленый цвет текста */
+        margin-top: 5px; /* Добавляем небольшой отступ сверху */
+        display: none; /* По умолчанию скрываем сообщение об успехе */
+    }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <form id="downloadForm">
+        <div id="successMessage" class="success-message">Загрузка скоро начнется...</div>
+        <input type="text" id="videoLink" name="link" placeholder="Введите ссылку на видео youtube">
+        <select id="resolution" name="resolution">
+            <option value="highest">Хорошее качество</option>
+            <option value="lowest">Плохое качество</option>
+        </select>
+        <button type="submit">Скачать видео</button>
+        <div id="errorMessage" class="error-message">Пожалуйста, введите корректную ссылку на видео</div>
+    </form>
+    <a class="button" href="/"><button>Главное меню</button></a>
+</div>
+    
+<script>
+    document.getElementById('downloadForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        const link = document.getElementById('videoLink').value;
+        const resolution = document.getElementById('resolution').value;
+        if (!link.trim()) { // Проверяем, что ссылка не пустая или состоит только из пробельных символов
+            document.getElementById('errorMessage').innerText = 'Пожалуйста, введите ссылку на видео';
+            document.getElementById('errorMessage').style.display = 'block'; // Показываем сообщение об ошибке
+            setTimeout(function() { // Устанавливаем таймер для скрытия сообщения об ошибке через 2000 мс
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 2000);
+            return; // Прерываем выполнение функции, чтобы форма не отправлялась
+        }
+
+        // Показываем сообщение "Загрузка началась"
+        document.getElementById('successMessage').style.display = 'block';
+
+        const formData = new FormData();
+        formData.append('link', link);
+        formData.append('resolution', resolution);
+
+        try {
+            const response = await fetch('/download/youtube', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                const blob = await response.blob(); // Получаем файловый объект
+                const url = window.URL.createObjectURL(blob); // Создаем URL для файла
+                const a = document.createElement('a'); // Создаем элемент <a>
+                a.href = url; // Устанавливаем URL
+                a.download = 'video_youtube.mp4'; // Устанавливаем имя файла для скачивания
+                a.click(); // "Кликаем" по ссылке для скачивания
+                window.URL.revokeObjectURL(url); // Освобождаем URL
+            } else {
+                const errorData = await response.json(); // Получаем данные об ошибке из JSON-ответа
+                document.getElementById('errorMessage').innerText = errorData.detail; // Отображаем сообщение об ошибке
+                document.getElementById('errorMessage').style.display = 'block'; // Показываем сообщение об ошибке
+                setTimeout(function() { // Устанавливаем таймер для скрытия сообщения об ошибке через 2000 мс
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 2000);
+            }
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+            // В случае ошибки показываем сообщение об ошибке
+            document.getElementById('errorMessage').innerText = 'Произошла ошибка при загрузке файла';
+            document.getElementById('errorMessage').style.display = 'block'; // Показываем сообщение об ошибке
+            setTimeout(function() { // Устанавливаем таймер для скрытия сообщения об ошибке через 2000 мс
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 2000);
+        }
+
+        // Скрываем сообщение "Загрузка началась" после выполнения запроса
+        document.getElementById('successMessage').style.display = 'none';
+    });
+</script>
+
+
+
+</body>
+</html>
