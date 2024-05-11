@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Main</title>
+<title>Instagram video Downloader</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -17,6 +17,7 @@
     }
 
     .container {
+        color: white;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -37,15 +38,8 @@
         margin-bottom: 10px; /* Добавляем небольшой отступ снизу */
     }
 
-    #resolution {
-        width: 100%; /* Устанавливаем ширину селекта на всю ширину контейнера */
-        padding: 10px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-    }
-
     button {
-        width: 100%;
+        width: 100%; /* Устанавливаем кнопку на всю ширину контейнера */
         padding: 10px;
         margin-top: 10px;
         box-sizing: border-box;
@@ -63,9 +57,9 @@
         background-color: #555;
     }
     .error-message {
-        color: red;
-        margin-top: 5px;
-        display: none;
+        color: red; /* Устанавливаем красный цвет текста */
+        margin-top: 5px; /* Добавляем небольшой отступ сверху */
+        display: none; /* По умолчанию скрываем сообщение об ошибке */
     }
     a {
         text-decoration: none;
@@ -73,9 +67,9 @@
         width: 100%;
     }
     .success-message {
-        color: white;
-        margin-top: 5px;
-        display: none;
+        color: white; /* Устанавливаем зеленый цвет текста */
+        margin-top: 5px; /* Добавляем небольшой отступ сверху */
+        display: none; /* По умолчанию скрываем сообщение об успехе */
     }
 
 </style>
@@ -83,15 +77,12 @@
 <body>
 
 <div class="container">
-    <img src="/static/icons/yt.png" width="50px" height="50px" alt="yt">
-    <br>
     <form id="downloadForm">
+        <img src="/static/icons/inst.png" width="50px" height="50px" alt="inst">
+        <br>
+        <br>
         <div id="successMessage" class="success-message">Загрузка скоро начнется...</div>
-        <input type="text" id="videoLink" name="link" placeholder="Введите ссылку на видео/shorts Youtube">
-        <select id="resolution" name="resolution">
-            <option value="highest">Хорошее качество</option>
-            <option value="lowest">Плохое качество</option>
-        </select>
+        <input type="text" id="videoLink" name="link" placeholder="Введите ссылку на видео/shorts Instagram">
         <button type="submit">Скачать видео</button>
         <div id="errorMessage" class="error-message">Пожалуйста, введите корректную ссылку на видео</div>
     </form>
@@ -102,7 +93,6 @@
     document.getElementById('downloadForm').addEventListener('submit', async function(event) {
         event.preventDefault(); // Предотвращаем отправку формы по умолчанию
         const link = document.getElementById('videoLink').value;
-        const resolution = document.getElementById('resolution').value;
         if (!link.trim()) { // Проверяем, что ссылка не пустая или состоит только из пробельных символов
             document.getElementById('errorMessage').innerText = 'Пожалуйста, введите ссылку на видео';
             document.getElementById('errorMessage').style.display = 'block'; // Показываем сообщение об ошибке
@@ -117,10 +107,9 @@
 
         const formData = new FormData();
         formData.append('link', link);
-        formData.append('resolution', resolution);
 
         try {
-            const response = await fetch('/download/youtube', {
+            const response = await fetch('/download/instagram', {
                 method: 'POST',
                 body: formData,
             });
@@ -129,7 +118,7 @@
                 const url = window.URL.createObjectURL(blob); // Создаем URL для файла
                 const a = document.createElement('a'); // Создаем элемент <a>
                 a.href = url; // Устанавливаем URL
-                a.download = 'video_youtube.mp4'; // Устанавливаем имя файла для скачивания
+                a.download = 'video_instagram.mp4'; // Устанавливаем имя файла для скачивания
                 a.click(); // "Кликаем" по ссылке для скачивания
                 window.URL.revokeObjectURL(url); // Освобождаем URL
             } else {
@@ -154,8 +143,6 @@
         document.getElementById('successMessage').style.display = 'none';
     });
 </script>
-
-
 
 </body>
 </html>

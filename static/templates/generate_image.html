@@ -25,31 +25,34 @@
 </div>
 <style>
 body {
+    color: white;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     overflow: hidden;
     overflow-y: auto;
-    background-color: #f4f4f4;
+    background-color: #444;
 
 }
 .sidebar {
     height: 100vh;
     width: 250px;
     position: fixed;
+    color: white;
     top: 0;
     left: 0;
-    background-color: #f4f4f4;
+    background-color: #444;
     padding: 20px;
     padding-top: 50px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 2px solid white; /* Добавляем белую рамку справа */
 }
 .sidebar label {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
     font-weight: bold;
-    color: #333;
+    color: white;
 }
 .sidebar input[type="text"],
 
@@ -72,8 +75,8 @@ body {
     margin: 10px 0;
     box-sizing: border-box;
     background-color: transparent;
-    color: black;
-    border: 2px solid black;
+    color: white;
+    border: 2px solid white;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -81,19 +84,20 @@ body {
 }
 
 .sidebar button:hover {
-    border-color: orange;
-    background-color: #f4f4f4;
-    color: black;
+        border-color: orange;
+        background-color: #555;
 }
+
 
 
 #loadingMessage {
     display: none;
     position: relative;
     top: 50%;
-    background-color: rgb(246, 213, 151);
+    background-color: rgb(222, 213, 34);
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
 }
 
 

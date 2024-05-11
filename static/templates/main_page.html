@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Main</title>
+<title>Главная страница</title>
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
+        background-color: #333; /* Темный фон */
         margin: 0;
         padding: 0;
         display: flex;
@@ -22,12 +22,12 @@
         justify-content: center;
         align-items: center;
         text-align: center; /* Центрируем текст внутри контейнера */
-        border: 2px solid #333;
+        border: 2px solid #ccc; /* Светлый цвет рамки */
         padding: 20px;
         border-radius: 8px;
         height: 500px;
         width: 300px;
-        background-color: #f4f4f4;
+        background-color: #444; /* Цвет фона контейнера в темном режиме */
     }
 
     button {
@@ -36,8 +36,8 @@
         margin: 10px 0;
         box-sizing: border-box;
         background-color: transparent;
-        color: black;
-        border: 2px solid black;
+        color: white; /* Белый цвет текста */
+        border: 2px solid white; /* Белая рамка */
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
@@ -46,20 +46,19 @@
 
     button:hover {
         border-color: orange;
-        background-color: #f4f4f4;
-        color: black;
+        background-color: #555; /* Цвет фона кнопок при наведении в темном режиме */
     }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <a href="/qrcode"><button>Создать QR Code</button></a>
+    <a href="/qrcode"><button>Сгенерировать QR Code</button></a>
     <a href="/qrcode/scan"><button>Сканировать QR Code</button></a>
     <a href="/image"><button>Сгенерировать изображение</button></a>
     <a href="/download/youtube"><button>Скачать видео с YouTube</button></a>
-    <a href="/download_tt"><button>Скачать видео с TikTok</button></a>
-    <a href="/download_inst"><button>Скачать видео с Instagram</button></a>
+    <a href="/download/tiktok"><button>Скачать видео с TikTok</button></a>
+    <a href="/download/instagram"><button>Скачать видео с Instagram</button></a>
 </div>
 
 </body>
