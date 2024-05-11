@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generate Image</title>
+<link rel="icon" href="/static/icons/main.jpg" type="image/x-icon">
+<title>Генерация изображения</title>
 </head>
 <body>
 
 <div class="sidebar">
     <form id="myForm" action="#">
-        <label for="input3">Промпт (на английском):</label>
-        <textarea id="textarea" name="textarea" placeholder="Например: The poor programmer is sad on his island"></textarea><br>
+        <label for="input3">Промпт:</label>
+        <textarea id="textarea" name="textarea" placeholder="Например: Илон Маск летит на Марс"></textarea><br>
         <button type="button" onclick="submitData()">Сгенерировать</button>
         <a href="/"><button type="button">Главное меню</button></a>
     </form>
@@ -18,10 +19,9 @@
 <div id="loadingMessage" style="display: none;">
     Генерация изображения, подождите...
 </div>
+
 <div id="imageContainer" style="display: none;">
     <img id="generatedImage" src="" alt="Сгенерированная картинка">
-    <br>
-    <label for="image">Сгенерированная картинка</label>
 </div>
 <style>
 body {
@@ -45,7 +45,7 @@ body {
     padding: 20px;
     padding-top: 50px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-right: 2px solid white; /* Добавляем белую рамку справа */
+    border-right: 2px solid white;
 }
 .sidebar label {
     display: block;
