@@ -19,6 +19,7 @@ cl = Client()
 cl.login(login, password)
 
 
+
 class Tools:
 
     @classmethod
@@ -27,8 +28,8 @@ class Tools:
             video = ttdownloader(link)
         except ValueError:
             raise HTTPException(status_code=404, detail='Видео не найдено, или неверная ссылка')
-        buffer = BytesIO()
-        writer = BufferedWriter(buffer)
+        buffer: BytesIO = BytesIO()
+        writer: BufferedWriter = BufferedWriter(buffer)
         video[0].download(writer)
         buffer.seek(0)
         return StreamingResponse(iter([buffer.getvalue()])) 
@@ -63,6 +64,6 @@ class Tools:
             async with session.get(video_url) as resp:
                 if resp.status == 200:
                     video_stream = await resp.content.read()
-                    return StreamingResponse(BytesIO(video_stream), media_type="video/mp4")
+                    return StreamingResponse(BytesIO(video_stream), media_type='video/mp4')
                 else:
-                    return {"msg": "Видео не найдено"}
+                    return {'msg': 'Видео не найдено'}

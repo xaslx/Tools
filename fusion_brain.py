@@ -26,12 +26,12 @@ class Text2ImageAPI:
 
     def generate(self, prompt, model, images=1, width=1024, height=1024):
         params = {
-            "type": "GENERATE",
-            "numImages": images,
-            "width": width,
-            "height": height,
-            "generateParams": {
-                "query": f"{prompt}"
+            'type': 'GENERATE',
+            'numImages': images,
+            'width': width,
+            'height': height,
+            'generateParams': {
+                "query": f'{prompt}'
             }
         }
 
