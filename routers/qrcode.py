@@ -1,12 +1,11 @@
-import aiofiles.os
 from fastapi import APIRouter, Request, Body, File, UploadFile
 from fastapi.templating import Jinja2Templates
 import segno
 import secrets
 import aiofiles
+import aiofiles.os
 from typing import Annotated
 import cv2
-import aiofiles
 from fastapi.responses import JSONResponse
 import json
 from json.decoder import JSONDecodeError
