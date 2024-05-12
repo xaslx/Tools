@@ -9,7 +9,20 @@ from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.exceptions import HTTPException
+from dotenv import load_dotenv
+import os
+import sentry_sdk
 
+
+load_dotenv()
+
+dsn: str = os.environ.get('dsn')
+
+sentry_sdk.init(
+    dsn=dsn,
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+)
 
 templates = Jinja2Templates('static/templates')
 
