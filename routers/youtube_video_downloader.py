@@ -1,11 +1,7 @@
-from fastapi import APIRouter, HTTPException, Request, Form
-from pytube import YouTube
+from fastapi import APIRouter, Request, Form
 from fastapi.responses import StreamingResponse
 
 from fastapi.templating import Jinja2Templates
-
-from pytube.exceptions import RegexMatchError, VideoUnavailable
-from io import BytesIO
 from tools import Tools
 
 templates = Jinja2Templates('static/templates')

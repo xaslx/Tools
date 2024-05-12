@@ -1,13 +1,24 @@
 from fastapi import APIRouter, Request, Body
 from fastapi.templating import Jinja2Templates
-import replicate
-from dotenv import load_dotenv, get_key
+from fastapi.exceptions import HTTPException
+from dotenv import load_dotenv
 from typing import Annotated
-import time
+import os
+from fusion_brain import Text2ImageAPI
+import base64
+import aiofiles
+import secrets
 
-load_dotenv('.env')
 
-REPLICATE_API_TOKEN: str = get_key('.env', 'REPLICATE_API_TOKEN')
+load_dotenv()
+
+api_key: str = os.environ.get('api_key')
+secret_key: str = os.environ.get('secret_key')
+
+
+api = Text2ImageAPI('https://api-key.fusionbrain.ai/', api_key=api_key, secret_key=secret_key)
+model_id = api.get_model()
+
 
 
 templates = Jinja2Templates('static/templates')
@@ -24,12 +35,14 @@ async def images(request: Request):
 
 @router.post('')
 async def images(body: Annotated[dict, Body()]):
-    # res = replicate.run('stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b',
-    #                             input={
-    #                                 'width': int(body['width']),
-    #                                 'height': int(body['height']),
-    #                                 'prompt': body['textarea']
-    #                             })
-    res = 'https://mykaleidoscope.ru/x/uploads/posts/2022-09/1663219930_12-mykaleidoscope-ru-p-rasteniya-dlya-yaponskogo-sada-krasivo-15.jpg'
-    time.sleep(2)
-    return {'image_url': res}
+    image_name: str = secrets.token_hex(10)
+    try:
+        res: str = api.generate(body['textarea'], model_id)
+        image: str = api.check_generation(res)
+    except:
+        raise HTTPException(status_code=500, detail='Сервер не отвечает')
+    image_base64: str = image[0]
+    image_data: str = base64.b64decode(image_base64)
+    async with aiofiles.open(f'static/gen_image/{image_name}.webp', "wb") as file:
+        await file.write(image_data)
+    return {'image_url': f'static/gen_image/{image_name}.webp'}

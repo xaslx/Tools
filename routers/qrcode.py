@@ -6,7 +6,6 @@ import secrets
 import aiofiles
 from typing import Annotated
 import cv2
-import shutil
 import aiofiles
 from fastapi.responses import JSONResponse
 import json
